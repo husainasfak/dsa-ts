@@ -12,21 +12,21 @@ Circular Linked List: Each node has a pointer to the next node. The last node ha
 */
 
 // Singly Linked List
-class ListNode{
+class ListNode {
     value: number;
     next: ListNode | null;
-    constructor(value: number){
+    constructor(value: number) {
         this.value = value;
         this.next = null;
     }
 }
 
 // Doubly Linked List
-class DoublyListNode{
+class DoublyListNode {
     value: number;
     next: DoublyListNode | null;
     prev: DoublyListNode | null
-    constructor(value: number){
+    constructor(value: number) {
         this.value = value;
         this.next = null;
         this.prev = null;
@@ -34,10 +34,10 @@ class DoublyListNode{
 }
 
 // Circular Linked List
-class CircularListNode{
+class CircularListNode {
     value: number
     next: CircularListNode | null;
-    constructor(value: number){
+    constructor(value: number) {
         this.value = value;
         this.next = this; // initally points to itself
     }
@@ -48,8 +48,8 @@ class CircularListNode{
 // Traversing a linked list
 
 function traverseSinglyLinkedList(head: ListNode | null): void {
-    let current:ListNode | null = head;
-    while(current){
+    let current: ListNode | null = head;
+    while (current) {
         console.log(current.value);
         current = current.next;
     }
@@ -57,20 +57,20 @@ function traverseSinglyLinkedList(head: ListNode | null): void {
 
 
 function traverseCircularLinkedList(head: CircularListNode | null): void {
-    if(!head) return;
+    if (!head) return;
     let current: CircularListNode = head;
-    do{
+    do {
         console.log(current.value);
         current = current.next!;
     }
-    while(current !== head);
+    while (current !== head);
 }
 
 // Search
 function searchSinglyLinkedList(head: ListNode | null, target: number): boolean {
     let current: ListNode | null = head;
-    while(current ){
-        if(current.value === target){
+    while (current) {
+        if (current.value === target) {
             return true;
         }
         current = current.next;
@@ -89,12 +89,12 @@ function insertAtBeginning(head: ListNode | null, value: number): ListNode {
 
 function insertAtEnd(head: ListNode | null, value: number): ListNode {
     const newNode = new ListNode(value);
-    if(!head){
+    if (!head) {
         head = newNode;
         return newNode;
     }
     let current = head;
-    while(current.next){
+    while (current.next) {
         current = current.next;
     }
     current.next = newNode;
@@ -103,7 +103,7 @@ function insertAtEnd(head: ListNode | null, value: number): ListNode {
 
 function insertAtPosition(head: ListNode | null, value: number, position: number): ListNode {
     const newNode = new ListNode(value);
-    if(position === 0){
+    if (position === 0) {
         newNode.next = head;
         head = newNode;
         return newNode;
@@ -111,14 +111,47 @@ function insertAtPosition(head: ListNode | null, value: number, position: number
     let current = head;
     let prev: ListNode | null = null;
     let index = 0;
-    while(current && index < position){
+    while (current && index < position) {
         prev = current;
         current = current.next;
         index++;
     }
-    if(prev){
+    if (prev) {
         prev.next = newNode;
     }
     newNode.next = current;
     return head!;
+}
+
+// delete
+function deleteNode(
+    head: ListNode | null,
+    target: number
+): ListNode | null {
+
+    // Case 1: Empty list
+    if (!head) return null;
+
+    // Case 2: Target is the first node
+    if (head.value === target) {
+        return head.next;
+    }
+
+    // Case 3: Search for the node before target
+    let current = head;
+
+    while (
+        current.next &&
+        current.next.value !== target
+    ) {
+        current = current.next;
+    }
+
+    // Case 4: Skip the target node
+    if (current.next) {
+        current.next = current.next.next;
+    }
+
+    // Return the updated list
+    return head;
 }
